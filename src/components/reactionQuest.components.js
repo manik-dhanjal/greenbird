@@ -9,6 +9,8 @@ import smile from '../assets/images/smile.png';
 
 const list = [smile, tasty, meh, hands, sad];
 const names = ["Good","Tasty","Average","Excellent","Not \nSatisfied"]
+
+
 const ReactionQuest = ({question,handleSubmit, productImage, selected}) => {
     const textColor = (current) => {
         if(names[current]==selected){

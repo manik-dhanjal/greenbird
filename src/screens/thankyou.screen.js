@@ -34,7 +34,7 @@ const ThankyouScreen = ({navigation}) => {
                 <Image source={chickenTikka} style={styles.columnElement}/>
             </View>
             <Button
-                title="Thank you"
+                title="THANK YOU"
                 onPress={handleLogout}
                 containerStyle={styles.logoutBtn}
             />

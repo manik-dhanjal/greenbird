@@ -2,13 +2,14 @@ import React, { useContext } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import { APP_TYPE } from '../constants/navigate.constants';
-import { Button } from 'react-native';
+import { Image } from 'react-native';
 import LogoHeader from '../components/logo_header.components';
 
 import QuizScreen from '../screens/quiz.screen';
 import ThankyouScreen from '../screens/thankyou.screen';
 import WelcomeScreen from '../screens/welcome.screen';
 import LoginScreen from '../screens/login.screen';
+import contLogo from  '../assets/images/cont-logo.png';
 
 export const Stack = createNativeStackNavigator();
 const AppStackNavigator = () =>{

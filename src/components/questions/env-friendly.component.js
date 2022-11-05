@@ -4,7 +4,8 @@ import MCQ from '../mcq.component'
 import Button from '../button.components'
 import { QuizContext } from '../../context/quiz.context'
 import QUEST_TYPE from '../../constants/question.constants'
-
+import message from '../../assets/images/q4-message.png'
+ 
 const EnvFriendly = ({idx,changeQuestion}) => {
   const {getResponse, setResponse} = useContext(QuizContext)
 
@@ -22,6 +23,7 @@ const EnvFriendly = ({idx,changeQuestion}) => {
                 selected_answers= {getResponse(QUEST_TYPE.ENV_FRIENDLY)}
                 handleOptionSelect = {(val) => setResponse(QUEST_TYPE.ENV_FRIENDLY,val)}
             />
+            <Image source={message} style={{width:'100%',resizeMode:'contain', height:250, marginVertical:30}}/>
         </View>
         <View style={{alignItems:'center', justifySelf:'end'}}>
             <Button

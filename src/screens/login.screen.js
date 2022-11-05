@@ -62,6 +62,7 @@ const LoginScreen = ({navigation, route}) => {
         }
         setMessage("");
         try{
+            setUser(REQUEST_PENDING(user.data))
             await createUserDocument(user.data)
             await setFeedbackResponse(getAllResponses,user.data.phone);
             navigation.navigate(APP_TYPE.thankYouScreen);
@@ -169,7 +170,7 @@ const LoginScreen = ({navigation, route}) => {
                                     </Text>
                                 </View>
                                     <Button
-                                        title="NEXT"
+                                        title="SUBMIT"
                                         containerStyle={styles.submit}
                                         onPress={handleAnonymousLogin}
                                         isLoading={user.status===PENDING}

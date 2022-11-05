@@ -1,26 +1,37 @@
-import { ImageBackground, Image,StyleSheet, Pressable } from 'react-native'
+import { ImageBackground, Image,StyleSheet, View } from 'react-native'
 import React from 'react'
 import bg from "../assets/images/bg.jpg";
-import bannerLogo from "../assets/images/ratanprash-logo.png"
+import welcomeCreative from "../assets/images/welcome-creative.png"
 import welcomeBtn from "../assets/images/welcome-btn.png"
 import { APP_TYPE } from '../constants/navigate.constants';
+import Button from "../components/button.components";
+import contLogo from  '../assets/images/cont-logo.png';
 
 const styles = StyleSheet.create({
-    scrollview:{
+    backgroundImage:{
         flex:1,
+    },
+    header:{
+        paddingHorizontal:15,
+    },
+    contLogoImg:{
+        height:70,
+        resizeMode:'contain',
+        width:66
     },
     container:{
         flex:1,
-        flexDirection:'column',
-        justifyContent:'space-evenly',
+        justifyContent:'center',
         alignItems:'center',
+        paddingBottom:40
     },
     bannerLogoImg:{
-        width:"90%",
-        height:"60%",
+        width:"95%",
+        height:"80%",
         resizeMode:'contain',
         maxHeight:600,
-        maxWidth:600
+        maxWidth:600,
+        marginBottom:30
     },
     welcomeBtn:{
         width:220,
@@ -42,18 +53,22 @@ const WelcomeScreen = ({navigation}) => {
     <ImageBackground
         source={bg}
         resizeMode="cover"
-        style={styles.container}
+        style={styles.backgroundImage}
         >
-            <Image
-                source={bannerLogo}
-                style={styles.bannerLogoImg}
-            />
-            <Pressable onPress={changeScreen} style={styles.welcomeBtn}>
-                <Image 
-                    source={welcomeBtn}
-                    style={styles.welcomeBtnImg}
+            <View style={styles.header}>
+                <Image source={contLogo} style={styles.contLogoImg}/>
+            </View>
+            <View style={styles.container}>
+                <Image
+                    source={welcomeCreative}
+                    style={styles.bannerLogoImg}
                 />
-            </Pressable>
+                <Button
+                    title="WELCOME"
+                    onPress={changeScreen}
+                    style={styles.welcomeBtn}
+                />
+            </View>
     </ImageBackground>
   )
 }

@@ -31,8 +31,8 @@ const ProductVideo = () => {
                 volume = {10}
                 style={{
                     height:280,
-                    width:"100%",
-                    maxWidth:280,
+                    width:280,
+                    backgroundColor:'#000'
                 }}
                 resizeMode={"contain"}
                 paused = {false}

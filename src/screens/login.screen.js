@@ -4,7 +4,7 @@ import bg from "../assets/images/bg.jpg";
 import Button from '../components/button.components'
 import C_TextInput from '../components/c_text_input.component'
 import C_RadioInput from '../components/c_radio_btn.components'
-import { PENDING, REQUEST_SUCCESS,REQUEST_FAILED } from '../constants/request.constants';
+import { PENDING, REQUEST_SUCCESS,REQUEST_FAILED, REQUEST_PENDING } from '../constants/request.constants';
 import { COLORS } from '../constants/theme.constants';
 import DropDown from '../components/c_dropdown.components';
 import rabit from '../assets/images/rabit.png';
@@ -15,6 +15,8 @@ import dna from '../assets/images/dna.png';
 import { createUserDocument, setFeedbackResponse } from '../utils/database.utils';
 import { QuizContext } from '../context/quiz.context';
 import { APP_TYPE } from '../constants/navigate.constants';
+import GB_Utils from '../utils';
+import LogoHeader from '../components/logo_header.components';
 
 const INITIAL_USER_INPUT = {
     name:"",
@@ -98,88 +100,93 @@ const LoginScreen = ({navigation, route}) => {
                     style={styles.avoidContainer}
                 >
                     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-                        <View  style={styles.container}>
-                                <Text style={styles.heading}>
-                                    Please enter your details
-                                </Text>
-                                <View style={styles.inputGroup}>
-                                    <C_TextInput
-                                        label="Name:"
-                                        name="name"
-                                        onChangeText={handleInputChange}
-                                        value={user.data.name}
-                                        placeholder="Name"
-                                        containerStyles={styles.input}
-                                    />
-                                    <C_TextInput
-                                        label="Mobile Number:"
-                                        name="phone"
-                                        onChangeText={handleInputChange}
-                                        value={user.data.phone}
-                                        placeholder="Mobile No."
-                                        containerStyles={styles.input}
-                                        type="tel"
-                                        countryCode='+91'
-                                    />
-                                    <DropDown
-                                        label="Location:"
-                                        data={[
-                                            { label:"Delhi", value:"Delhi"},
-                                            { value:"Chandigarh", label:"Chandigarh"},
-                                            { value:"Mumbai", label:"Mumbai" },
-                                            { value:"Pune", label:"Pune" },
-                                            { value:"Ahmedabad", label:"Ahmedabad" },
-                                            { value:"Bengluru", label:"Bengluru" },
-                                            { value:"Hyderabad", label:"Hyderabad" },
-                                        ]}
-                                        handleChange={(value) => handleInputChange("location",value)}
-                                        value={user.data.location}
-                                        placeholder={"Select Location"}
-                                    />
-                                </View>
-                                <View style={styles.featuresCont}>
-                                    <View style={styles.feature} >
-                                        <Image source={wheet} style={styles.featureImage}/>
-                                        <Text style={styles.featureText}>More Fiber than Meat</Text>
+                        <>
+                            <LogoHeader/>
+                            <View  style={styles.container}>
+                                    {/* <Text style={styles.heading}>
+                                        Please enter your details
+                                    </Text> */}
+                                    <View style={styles.inputGroup}>
+                                        <C_TextInput
+                                            label="Name:"
+                                            name="name"
+                                            onChangeText={handleInputChange}
+                                            value={user.data.name}
+                                            placeholder="Name"
+                                            containerStyles={styles.input}
+                                        />
+                                        <C_TextInput
+                                            label="Mobile Number:"
+                                            name="phone"
+                                            onChangeText={handleInputChange}
+                                            value={user.data.phone}
+                                            placeholder="Mobile No."
+                                            containerStyles={styles.input}
+                                            type="tel"
+                                            countryCode='+91'
+                                        />
+                                        <DropDown
+                                            label="Location:"
+                                            data={[
+                                                { label:"Delhi", value:"Delhi"},
+                                                { value:"Chandigarh", label:"Chandigarh"},
+                                                { value:"Mumbai", label:"Mumbai" },
+                                                { value:"Pune", label:"Pune" },
+                                                { value:"Ahmedabad", label:"Ahmedabad" },
+                                                { value:"Bengluru", label:"Bengluru" },
+                                                { value:"Hyderabad", label:"Hyderabad" },
+                                            ]}
+                                            handleChange={(value) => handleInputChange("location",value)}
+                                            value={user.data.location}
+                                            placeholder={"Select Location"}
+                                        />
                                     </View>
-                                    <View style={styles.feature} >
-                                        <Image source={arm} style={styles.featureImage}/>
-                                        <Text style={styles.featureText}>Good Source of Protein</Text>
+                                    <View style={styles.featuresCont}>
+                                        <View style={styles.feature} >
+                                            <Image source={wheet} style={styles.featureImage}/>
+                                            <Text style={styles.featureText}>More Fiber than Meat</Text>
+                                        </View>
+                                        <View style={styles.feature} >
+                                            <Image source={arm} style={styles.featureImage}/>
+                                            <Text style={styles.featureText}>Good Source of Protein</Text>
+                                        </View>
+                                        <View style={styles.feature} >
+                                            <Image source={rabit} style={styles.featureImage}/>
+                                            <Text style={styles.featureText}>Cruelty Free</Text>
+                                        </View> 
                                     </View>
-                                    <View style={styles.feature} >
-                                        <Image source={rabit} style={styles.featureImage}/>
-                                        <Text style={styles.featureText}>Cruelty Free</Text>
-                                    </View> 
-                                </View>
-                                <View style={styles.featuresCont}>
-                                    <View style={styles.feature} >
-                                        <Image source={dna} style={styles.featureImage}/>
-                                        <Text style={styles.featureText}>No G.M.O</Text>
+                                    <View style={styles.featuresCont}>
+                                        <View style={styles.feature} >
+                                            <Image source={dna} style={styles.featureImage}/>
+                                            <Text style={styles.featureText}>No G.M.O</Text>
+                                        </View>
+                                        <View style={styles.feature} >
+                                            <Image source={plant} style={styles.featureImage}/>
+                                            <Text style={styles.featureText}>Sustainable</Text>
+                                        </View> 
                                     </View>
-                                    <View style={styles.feature} >
-                                        <Image source={plant} style={styles.featureImage}/>
-                                        <Text style={styles.featureText}>Sustainable</Text>
-                                    </View> 
-                                </View>
-                                <View style={styles.mission}>
-                                    <Text style={styles.missionTitle}>JOIN THE MISSION</Text>
-                                    <Text style={styles.missionDesc}>
-                                        "Indulge in a plate of goodness of Greenbird, with a smile on your face
-                                        knowing that you haven't harmed a single animal and in doing so you are
-                                        contributing toward a sustainable future."
-                                    </Text>
-                                </View>
-                                    <Button
-                                        title="SUBMIT"
-                                        containerStyle={styles.submit}
-                                        onPress={handleAnonymousLogin}
-                                        isLoading={user.status===PENDING}
-                                    />
-                                    {
-                                        user.message &&
-                                        <Text style={styles.error}>{user.message}</Text>
-                                    }
-                        </View>
+                                    <View style={styles.mission}>
+                                        <Text style={styles.missionTitle}>JOIN THE MISSION</Text>
+                                        <Text style={styles.missionDesc}>
+                                            "Indulge in a plate of goodness of Greenbird, with a smile on your face
+                                            knowing that you haven't harmed a single animal and in doing so you are
+                                            contributing toward a sustainable future."
+                                        </Text>
+                                    </View>
+                                        {
+                                            user.message &&
+                                            <Text style={styles.error}>{user.message}</Text>
+                                        }
+                                        <Button
+                                            title="SUBMIT"
+                                            containerStyle={styles.submit}
+                                            onPress={handleAnonymousLogin}
+                                            isLoading={user.status===PENDING}
+                                        />
+
+                            </View>
+                        </>
+
                     </TouchableWithoutFeedback>      
                 </KeyboardAvoidingView>
             </ScrollView>
@@ -201,37 +208,36 @@ const styles = StyleSheet.create({
     container:{
         paddingLeft:15,
         paddingRight:15,
-        paddingTop:30,
-        paddingBottom:30,
+        paddingBottom:GB_Utils.verticalScale(30),
         alignItems:'stretch',
-        maxWidth:400
     },
     scroll:{
         paddingTop:15
 
     },
     whiteCont:{
-        maxWidth:450,
+        // maxWidth:450,
         width:'100%',
     },  
     heading:{
-        fontSize:26,
+        fontSize:GB_Utils.scale(20),
         color:COLORS.white,
         fontWeight:'600',
-        marginBottom:20,
-        textAlign:'center'
+        marginBottom:GB_Utils.verticalScale(20),
+        textAlign:'center',
+        paddingTop:GB_Utils.verticalScale(20),
     },
     inputGroup:{
-        marginBottom:30,
+        marginBottom:GB_Utils.verticalScale(30),
     },
     submit:{
         marginTop:20,
         alignSelf:'center'
     },
     error:{
-        fontSize:16,
+        fontSize:GB_Utils.scale(16),
         color:COLORS.orange,
-        marginTop:20,
+        marginTop:GB_Utils.verticalScale(20),
         textAlign:'center',
         fontWeight:"600"
     },
@@ -239,37 +245,37 @@ const styles = StyleSheet.create({
         flexDirection:'row',
         justifyContent:'center',
         marginBottom:20,
-        maxWidth:400,
+        // maxWidth:400,
     },
     feature:{
-        width:90,
-        marginHorizontal:10
+        width:GB_Utils.scale(65),
+        marginHorizontal:GB_Utils.scale(10)
     },
     featureImage:{
-        width:90,
-        height:90,
+        width:GB_Utils.scale(65),
+        height:GB_Utils.scale(65),
     },
     featureText:{
         color:'#fff',
-        fontSize:14,
+        fontSize:GB_Utils.scale(10),
         textAlign:'center'
     },
     mission:{
-        marginBottom:10,
-        marginTop:10
+        marginBottom:GB_Utils.verticalScale(10),
+        marginTop:GB_Utils.verticalScale(10)
     },
     missionTitle:{
-        fontSize:20,
+        fontSize:GB_Utils.scale(18),
         fontWeight:'700',
         textAlign:'center',
         color:'#FFC100',
-        marginBottom:10
+        marginBottom:GB_Utils.verticalScale(10)
     },
     missionDesc:{
         fontWeight:'600',
         color:'#fff',
         textAlign:'center',
-        fontSize:16
+        fontSize:GB_Utils.scale(14)
     },
     input:{
         marginBottom:20

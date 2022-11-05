@@ -11,8 +11,7 @@ import productVideo from "../../assets/video/product-video.mp4"
 import C_TextInput from '../c_text_input.component';
 import { QuizContext } from '../../context/quiz.context';
 import QUEST_TYPE from '../../constants/question.constants';
-
-
+import GB_Utils from '../../utils';
 
 const ProductVideo = () => {
     const videoPlayer = useRef(null);
@@ -30,9 +29,9 @@ const ProductVideo = () => {
                 source = {require("../../assets/video/product-video.mp4")}
                 volume = {10}
                 style={{
-                    height:280,
-                    width:280,
-                    backgroundColor:'#000'
+                    height:GB_Utils.scale(170),
+                    width:'80%',
+                    // backgroundColor:'#000'
                 }}
                 resizeMode={"contain"}
                 paused = {false}
@@ -45,13 +44,13 @@ const ProductVideo = () => {
 const FeedbackOfVideo = () => {
     const {getResponse,setResponse} = useContext(QuizContext);
     return(
-        <View style={{marginBottom:30}}>
+        <View style={{marginBottom: GB_Utils.verticalScale(30)}}>
             <View>
-                <Text style={{color:'#fff', fontSize:20, marginBottom:15}}>Feedback of Video:-</Text>
+                <Text style={{color:'#fff', fontSize:GB_Utils.scale(16), marginBottom:GB_Utils.verticalScale(15)}}>Feedback of Video:-</Text>
             </View>
             <C_TextInput
                 multiline={true}
-                style={{height:150}}
+                style={{height:GB_Utils.verticalScale(150), textAlignVertical:'top' }}
                 onChangeText={(name,val) => setResponse(QUEST_TYPE.VIDEO_FEEDBACK,val)}
                 value = {getResponse(QUEST_TYPE.VIDEO_FEEDBACK)}
             />
@@ -81,14 +80,15 @@ const VideoFeedback = ({idx,changeQuestion}) => {
         <View>
             {stage==0 && <ProductVideo/>}
             { stage==1 && <FeedbackOfVideo/> } 
-
-            <View style={styles.dualColumn}>
-                <Image source={chickenNuggets} style={styles.columnElement}/>
-                <Image source={muttonKeema} style={styles.columnElement}/>
-            </View>
-            <View style={styles.dualColumn}>
-                <Image source={chickenSausages} style={styles.columnElement}/>
-                <Image source={chickenTikka} style={styles.columnElement}/>
+            <View style={{marginTop:GB_Utils.verticalScale(30)}}>
+                <View style={styles.dualColumn}>
+                    <Image source={chickenNuggets} style={styles.columnElement}/>
+                    <Image source={muttonKeema} style={styles.columnElement}/>
+                </View>
+                <View style={styles.dualColumn}>
+                    <Image source={chickenSausages} style={styles.columnElement}/>
+                    <Image source={chickenTikka} style={styles.columnElement}/>
+                </View>
             </View>
         </View>
         <View style={{alignItems:'center', justifySelf:'end'}}>
@@ -106,7 +106,8 @@ const styles = StyleSheet.create({
     container:{
         flex:1,
         justifyContent:'space-between',
-        paddingVertical:30
+        paddingTop:GB_Utils.verticalScale(50),
+        paddingBottom: GB_Utils.verticalScale(30),
     },
     dualColumn:{
         flexDirection:'row', 
@@ -114,10 +115,9 @@ const styles = StyleSheet.create({
     },
     columnElement:{
         width:'45%', 
-        height:140,
+        height: GB_Utils.scale(90),
         resizeMode:'contain', 
-        paddingHorizontal:10
-    },
+    }
 })
 
 export default VideoFeedback

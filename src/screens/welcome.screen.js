@@ -6,6 +6,7 @@ import welcomeBtn from "../assets/images/welcome-btn.png"
 import { APP_TYPE } from '../constants/navigate.constants';
 import Button from "../components/button.components";
 import contLogo from  '../assets/images/cont-logo.png';
+import GB_Utils from '../utils';
 
 const styles = StyleSheet.create({
     backgroundImage:{
@@ -15,30 +16,21 @@ const styles = StyleSheet.create({
         paddingHorizontal:15,
     },
     contLogoImg:{
-        height:70,
+        height:GB_Utils.scale(60),
         resizeMode:'contain',
-        width:66
+        width:GB_Utils.scale(66)
     },
     container:{
         flex:1,
         justifyContent:'center',
         alignItems:'center',
-        paddingBottom:40
+        paddingBottom:GB_Utils.verticalScale(40)
     },
     bannerLogoImg:{
         width:"95%",
         height:"80%",
         resizeMode:'contain',
-        maxHeight:600,
-        maxWidth:600,
-        marginBottom:30
-    },
-    welcomeBtn:{
-        width:220,
-    },
-    welcomeBtnImg:{
-        width:"100%",
-        resizeMode:'contain',
+        marginBottom:GB_Utils.verticalScale(30)
     },
 });
 const WelcomeScreen = ({navigation}) => {

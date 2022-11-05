@@ -9,6 +9,7 @@ import chickenSausages from '../../assets/images/chicken-sausages.png'
 import DropDown from '../c_dropdown.components';
 import { QuizContext } from '../../context/quiz.context';
 import QUEST_TYPE from '../../constants/question.constants';
+import GB_Utils from '../../utils';
 
 const TriedMeat = ({idx,changeQuestion}) => {
   const {setResponse,getResponse} = useContext(QuizContext);
@@ -25,7 +26,7 @@ const TriedMeat = ({idx,changeQuestion}) => {
   }
   return (
     <View style={styles.container}>
-        <View>
+        <View style={{flex:1}}>
             <MCQ 
                 idx = {idx}
                 question = "Have you tried any other plant based meat brand?"
@@ -57,14 +58,15 @@ const TriedMeat = ({idx,changeQuestion}) => {
                 placeholder="Select a Meat Brand"
             />
             }
-
-            <View style={styles.dualColumn}>
-                <Image source={chickenNuggets} style={styles.columnElement}/>
-                <Image source={muttonKeema} style={styles.columnElement}/>
-            </View>
-            <View style={styles.dualColumn}>
-                <Image source={chickenSausages} style={styles.columnElement}/>
-                <Image source={chickenTikka} style={styles.columnElement}/>
+            <View style={{flex:1, flexDirection:'column', justifyContent:'center'}}>
+                <View style={styles.dualColumn}>
+                    <Image source={chickenNuggets} style={styles.columnElement}/>
+                    <Image source={muttonKeema} style={styles.columnElement}/>
+                </View>
+                <View style={styles.dualColumn}>
+                    <Image source={chickenSausages} style={styles.columnElement}/>
+                    <Image source={chickenTikka} style={styles.columnElement}/>
+                </View>
             </View>
         </View>
         <View style={{alignItems:'center', justifySelf:'end'}}>
@@ -81,19 +83,18 @@ const TriedMeat = ({idx,changeQuestion}) => {
 const styles = StyleSheet.create({
     container:{
         flex:1,
-        justifyContent:'space-between',
-        paddingVertical:30
+        // justifyContent:'space-between',
+        paddingVertical:GB_Utils.verticalScale(40),
+        paddingHorizontal:15
     },
     dualColumn:{
         flexDirection:'row', 
         justifyContent:'center'
     },
     columnElement:{
-        width:'45%', 
-        height:140,
-        // height:'40%',
+        width:'38%', 
+        height:GB_Utils.scale(90),
         resizeMode:'contain', 
-        paddingHorizontal:10
     }
 })
 

@@ -1,0 +1,16 @@
+0. keytool -genkey -v -keystore my-release-key.keystore -alias my-key-alias -keyalg RSA -keysize 2048 -validity 10000
+
+1.1 mkdir ./android/app/src/main/assets/
+1.2. npx react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res
+
+2.1 rm -rf ./android/app/src/main/res/drawable-*
+2.2 rm -rf ./android/app/src/main/res/raw
+2.3 cd android && ./gradlew assembleRelease --console plain
+
+3. adb install -r ./app/build/outputs/apk/release/app-release.apk
+
+apk will present in 
+ratnaprashQna/android/app/build/outputs/apk/release/app-release.apk
+
+for getting SHA1 SHA-256 keys
+0.  cd android && ./gradlew signingReport --console plain

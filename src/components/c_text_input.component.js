@@ -1,5 +1,6 @@
 import { View, Text, TextInput, StyleSheet } from 'react-native'
 import React from 'react'
+import GB_Utils from '../utils'
 
 const styles = StyleSheet.create({
     container:{
@@ -8,18 +9,18 @@ const styles = StyleSheet.create({
     input:{
         backgroundColor:"#ffffff",
         borderColor:"#ffffff",
-        paddingHorizontal:15,
-        paddingVertical:8,
+        paddingHorizontal:GB_Utils.scale(10),
+        paddingVertical:GB_Utils.verticalScale(8),
         borderWidth:1,
         color:"#000",
-        fontSize:18,
+        fontSize:GB_Utils.scale(14),
         borderRadius:5,
-
+        verticalAlign:'start',
     },
     phoneInputContainer:{
       backgroundColor:"#ffffff",
       borderColor:"#ffffff",
-      paddingHorizontal:15,
+      paddingHorizontal:GB_Utils.scale(10),
       borderWidth:1,
       width:'100%',
       borderRadius:5,
@@ -30,19 +31,19 @@ const styles = StyleSheet.create({
     phoneInput:{
       placeholderTextColor:'#000',
       color:'#000',
-      fontSize:16,
+      fontSize:GB_Utils.scale(14),
       padding:0,
-      marginLeft:10,
-      paddingVertical:8,
+      marginLeft:GB_Utils.scale(10),
+      paddingVertical:GB_Utils.verticalScale(8),
       flex:1,
     },
     countryCode:{
       color:'#000',
-      fontSize:16
+      fontSize:GB_Utils.scale(14)
     },
     label:{
-        marginBottom:10,
-        fontSize:18,
+        marginBottom: GB_Utils.verticalScale(10),
+        fontSize:GB_Utils.scale(12),
         color:"#fff",
         fontWeight:"600"
     },

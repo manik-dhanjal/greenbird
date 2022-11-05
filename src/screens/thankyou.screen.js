@@ -9,7 +9,8 @@ import chickenTikka from '../assets/images/chicken-tikka.png'
 import chickenSausages from '../assets/images/chicken-sausages.png'
 import { QuizContext } from '../context/quiz.context'
 import { APP_TYPE } from '../constants/navigate.constants'
-
+import GB_Utils from '../utils';
+import LogoHeader from '../components/logo_header.components'
 
 const ThankyouScreen = ({navigation}) => {
   const {flushResponse} = useContext(QuizContext);
@@ -54,49 +55,29 @@ const styles = StyleSheet.create({
     flex:1,
     resizeMode:'contain',
     justifyContent:'center',
-    alignItems:'center'
-  },
-  bottom:{
-    justifyContent:'center',
-    width:'100%'
-  },
-  bottleImg:{
-    width:260,
-    resizeMode:'contain',
-    height:400,
-    alignSelf:'center',
-    // backgroundColor:'red'
+    alignItems:'center',
+    paddingHorizontal:15,
+    paddingTop:GB_Utils.verticalScale(50)
   },
   titleText:{
-    fontSize:23,
-    maxWidth:340,
+    fontSize:GB_Utils.scale(23),
+    maxWidth:GB_Utils.scale(340),
     fontWeight:'600',
     color:'#fff',
-    textAlign:'center'
-  },
-  title:{
-    width:'100%',
-    paddingHorizontal:20,
-    alignItems:'center',
-    marginBottom:30
-  },
-  titleImg:{
-    width:'100%',
-    resizeMode:'contain'
-  },
-  logoutBtn:{
-    marginTop:50,
-    alignSelf:'center'
+    textAlign:'center',
+    marginBottom:GB_Utils.verticalScale(30)
   },
   dualColumn:{
     flexDirection:'row', 
     justifyContent:'center'
   },
+  logoutBtn:{
+    alignSelf:'center',
+    marginTop:GB_Utils.verticalScale(50)
+  },
   columnElement:{
-        width:'45%', 
-        height:140,
-        // height:'40%',
-        resizeMode:'contain', 
-        paddingHorizontal:10
-    }
+      width:'45%', 
+      height: GB_Utils.scale(100),
+      resizeMode:'contain', 
+  }
 })

@@ -5,7 +5,7 @@ import meh from '../assets/images/meh.png';
 import sad from '../assets/images/sad.png';
 import tasty from '../assets/images/tasty.png';
 import smile from '../assets/images/smile.png';
-
+import GB_Utils from "../utils";
 
 const list = [smile, tasty, meh, hands, sad];
 const names = ["Good","Tasty","Average","Excellent","Not \nSatisfied"]
@@ -49,37 +49,38 @@ const ReactionQuest = ({question,handleSubmit, productImage, selected}) => {
 
 const styles = StyleSheet.create({
     container:{
-        alignItems:'center',
         justifyContent:'space-around',
         flex:1
     },
     question:{
-        marginBottom:40,
+        marginBottom:GB_Utils.verticalScale(20),
     },
     questionText:{
         color:'#fff',
-        fontSize:25,
+        fontSize:GB_Utils.scale(18),
         fontWeight:'600'
     },
     emoji:{
-      width:60,
-      height:60
+      width:GB_Utils.scale(50),
+      height:GB_Utils.scale(50)
     },
     emojiCollection:{
         flexDirection:'row',
         justifyContent:'center'
     },
     emojiCont:{
-        marginHorizontal:4,
-        width:64
+        marginHorizontal:GB_Utils.scale(7),
+        width:GB_Utils.scale(50),
+        alignItems:'center'
     },
     productImage:{
-        width:300,
-        height:300,
-        resizeMode:'contain'
+        width:GB_Utils.scale(200),
+        height:GB_Utils.scale(200),
+        resizeMode:'contain',
+        alignSelf:'center'
     },
     emojiText:{
-        fontSize:16,
+        fontSize:GB_Utils.scale(10),
         textAlign:'center'
     }
   })

@@ -1,6 +1,7 @@
 import React,{useState} from 'react'
 import { StyleSheet , View, Text} from 'react-native'
 import {Picker} from '@react-native-picker/picker';
+import GB_Utils from '../utils';
 
 const DropDown = ({label,value,data,handleChange,labelStyles={},containerStyles={}, placeholder}) => {
   return (
@@ -14,11 +15,12 @@ const DropDown = ({label,value,data,handleChange,labelStyles={},containerStyles=
               selectedValue={value}
               onValueChange={(itemValue, itemIndex) => handleChange(itemValue,itemIndex)}
               style={styles.picker}
+              
             >
-              <Picker.Item label={placeholder} value={""} />
+              <Picker.Item label={placeholder} value={""} style={{fontSize:GB_Utils.scale(14)}}/>
                 {
                     data.map((item) => (
-                        <Picker.Item label={item.label} value={item.value} key={item.value}/>
+                        <Picker.Item label={item.label} value={item.value} key={item.value} style={{fontSize:GB_Utils.scale(14),}}/>
                     ))
                 }
             </Picker>
@@ -35,20 +37,19 @@ const styles = StyleSheet.create({
       },
       picker:{
         color:'#000',
+        fontSize: GB_Utils.scale(14),
       },
       input:{
         backgroundColor:"#ffffff",
         borderColor:"#ffffff",
-          // paddingHorizontal:15,
-          // paddingVertical:8,
           borderWidth:1,
           color:"#000",
-          fontSize:18,
+          fontSize: GB_Utils.scale(14),
           borderRadius:5,
       },
       label:{
-          marginBottom:10,
-          fontSize:18,
+          marginBottom:GB_Utils.verticalScale(10),
+          fontSize:GB_Utils.scale(12),
           color:"#fff",
           fontWeight:"600"
       },

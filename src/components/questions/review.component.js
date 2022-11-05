@@ -7,6 +7,7 @@ import chickenTikka from '../../assets/images/chicken-tikka.png';
 import ReactionQuest from '../reactionQuest.components';
 import { QuizContext } from '../../context/quiz.context';
 import QUEST_TYPE from '../../constants/question.constants';
+import GB_Utils from '../../utils'
 
 const WhatTasted = ({idx}) => {
     const {setResponse,getResponse} = useContext(QuizContext);
@@ -14,7 +15,7 @@ const WhatTasted = ({idx}) => {
         setResponse(QUEST_TYPE.WHAT_TASTED, selected_answer);
     }
     return(
-        <View>
+        <View style={{flex:1}}>
             <MCQ 
                 idx = {idx}
                 question = {"Which Product you have tasted ?"}
@@ -22,9 +23,11 @@ const WhatTasted = ({idx}) => {
                 selected_answers = {getResponse(QUEST_TYPE.WHAT_TASTED)}
                 handleOptionSelect = {handleMCQOptionSelect}
             />
-            <View style={styles.dualColumn}>
-                <Image source={chickenNuggets} style={styles.columnElement}/>
-                <Image source={chickenTikka} style={styles.columnElement}/>
+            <View style={{flex:1,justifyContent:'center'}}>
+                <View style={styles.dualColumn}>
+                    <Image source={chickenNuggets} style={styles.columnElement}/>
+                    <Image source={chickenTikka} style={styles.columnElement}/>
+                </View>
             </View>
         </View>
     )
@@ -96,18 +99,22 @@ const styles = StyleSheet.create({
     container:{
         flex:1,
         justifyContent:'space-between',
-        paddingVertical:30
+        paddingTop:GB_Utils.verticalScale(50),
+        paddingBottom: GB_Utils.verticalScale(30),
+        paddingHorizontal:15
     },
     dualColumn:{
         flexDirection:'row', 
-        justifyContent:'center'
+        justifyContent:'space-evenly',
+        // backgroundColor:'#fff'
     },
     columnElement:{
-        width:'45%', 
-        height:300,
+        width:'50%', 
+        height:GB_Utils.verticalScale(140),
         // height:'40%',
+        // backgroundColor:'#000',
         resizeMode:'contain', 
-        paddingHorizontal:10
+        paddingHorizontal:GB_Utils.scale(10)
     }
 })
 

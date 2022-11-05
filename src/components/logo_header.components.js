@@ -3,6 +3,7 @@ import React from 'react'
 import contLogo from '../assets/images/cont-logo.png';
 import greenbirdLogo from "../assets/images/greenbird-logo.png"
 import { COLORS } from '../constants/theme.constants';
+import GB_Utils from "../utils";
 
 const LogoHeader = () => {
   return (
@@ -22,16 +23,17 @@ const styles = StyleSheet.create({
         paddingHorizontal:10,
         paddingBottom:5,
         marginBottom:20,
+        width:'100%'
     },
     contLogo:{
-        height:70,
+        height:GB_Utils.verticalScale(70),
         resizeMode:'contain',
-        width:66
+        width:GB_Utils.scale(66)
     },
     gbLogo:{
-        height:50,
+        height:GB_Utils.verticalScale(50),
         resizeMode:'contain',
-        width:130,
+        width:GB_Utils.scale(130),
         alignSelf:'center'
     }
 })

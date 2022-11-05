@@ -44,7 +44,8 @@ const QuizScreen = ({navigation}) => {
 
 const styles = StyleSheet.create({
     imageBackground:{
-        flex:1
+        flex:1,
+        alignItems:'center'
     },
     avoidContainer:{
         flex:1,
@@ -55,7 +56,8 @@ const styles = StyleSheet.create({
     scrollView:{
         flex:1,
         marginTop:60,
-        paddingHorizontal:15
+        paddingHorizontal:15,
+        // maxWidth:400
         // backgroundColor:'#000'
     }
 })

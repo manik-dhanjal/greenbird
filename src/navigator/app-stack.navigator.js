@@ -48,7 +48,9 @@ const AppStackNavigator = () =>{
         />
 
         <Stack.Screen name={APP_TYPE.thankYouScreen } component={ThankyouScreen} options={{
-          header:() => null
+          headerBackVisible:false,
+          headerTransparent:true,
+          header:() => <LogoHeader/>
         }}/>
       </Stack.Navigator>
   );

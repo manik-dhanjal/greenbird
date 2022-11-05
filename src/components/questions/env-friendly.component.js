@@ -5,7 +5,8 @@ import Button from '../button.components'
 import { QuizContext } from '../../context/quiz.context'
 import QUEST_TYPE from '../../constants/question.constants'
 import message from '../../assets/images/q4-message.png'
- 
+import GB_Utils from '../../utils';
+
 const EnvFriendly = ({idx,changeQuestion}) => {
   const {getResponse, setResponse} = useContext(QuizContext)
 
@@ -15,7 +16,7 @@ const EnvFriendly = ({idx,changeQuestion}) => {
   }
   return (
     <View style={styles.container}>
-        <View>
+        <View style={{flex:1}}>
             <MCQ 
                 idx = {idx}
                 question = "Are you conscious about the environment and believe in sustainable living?"
@@ -23,7 +24,7 @@ const EnvFriendly = ({idx,changeQuestion}) => {
                 selected_answers= {getResponse(QUEST_TYPE.ENV_FRIENDLY)}
                 handleOptionSelect = {(val) => setResponse(QUEST_TYPE.ENV_FRIENDLY,val)}
             />
-            <Image source={message} style={{width:'100%',resizeMode:'contain', height:250, marginVertical:30}}/>
+            <Image source={message} style={styles.message}/>
         </View>
         <View style={{alignItems:'center', justifySelf:'end'}}>
             <Button
@@ -40,18 +41,14 @@ const styles = StyleSheet.create({
     container:{
         flex:1,
         justifyContent:'space-between',
-        paddingVertical:30
+        paddingVertical:GB_Utils.verticalScale(40)
     },
-    dualColumn:{
-        flexDirection:'row', 
-        justifyContent:'center'
-    },
-    columnElement:{
-        width:'45%', 
-        height:140,
+    message:{
+        width:'100%',
         resizeMode:'contain', 
-        paddingHorizontal:10
-    }
+        height:GB_Utils.scale(180), 
+        marginTop:GB_Utils.verticalScale(20)
+    },
 })
 
 export default EnvFriendly

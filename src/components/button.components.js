@@ -2,6 +2,8 @@ import { Text, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-nat
 import DropShadow from 'react-native-drop-shadow';
 import React from 'react'
 import { COLORS } from '../constants/theme.constants';
+import GB_Utils from "../utils";
+
 const styles =StyleSheet.create({  
     shadowProp:{  
         shadowOffset:{width:0, height:3},  
@@ -14,16 +16,16 @@ const styles =StyleSheet.create({
         justifyContent:'center',  
         alignItems:'center',  
         // height:42, 
-        minWidth:180,
-        borderRadius:8,  
-        height:50,
+        minWidth:GB_Utils.scale(180),
+        borderRadius:GB_Utils.scale(8),  
+        height:GB_Utils.verticalScale(50),
         flexDirection:'row',
         borderColor:COLORS.white,
         borderWidth:1.5
     },  
       buttonText:{  
         color:COLORS.maroon,  
-        fontSize:20,
+        fontSize:GB_Utils.verticalScale(20),
         fontWeight:'600'
     },  
       text:{  

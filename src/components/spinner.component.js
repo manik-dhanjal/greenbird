@@ -3,12 +3,12 @@ import React from 'react'
 import { ActivityIndicator, StyleSheet } from 'react-native'
 import { COLORS } from '../constants/theme.constants'
 
-const SpinnerWrapper = ({children,isActive}) => {
+const SpinnerWrapper = ({children,isActive,overlayStyle={}}) => {
   if(!isActive) return children;
   return (
     <View style={styles.container}>
       {children}
-      <View style={styles.overlay}>
+      <View style={[styles.overlay,overlayStyle]}>
         <ActivityIndicator size={"large"} color={COLORS.orange}/>
       </View>
 

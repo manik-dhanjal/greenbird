@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Image } from 'react-native'
+import { View, Text, StyleSheet, Image,ScrollView } from 'react-native'
 import React, {useEffect, useState,useContext } from 'react'
 import MCQ from '../mcq.component'
 import Button from '../button.components'
@@ -9,20 +9,35 @@ import chickenSausages from '../../assets/images/chicken-sausages.png'
 import { QuizContext } from '../../context/quiz.context';
 import QUEST_TYPE from '../../constants/question.constants';
 import GB_UTILS from '../../utils';
+import TextInput from '../c_text_input.component';
 
 const NextPurchase = ({idx,changeQuestion}) => {
   const {getResponse, setResponse} = useContext(QuizContext);
-
+  const handleOptionSelect = (val) => {
+    setResponse(QUEST_TYPE.NEXT_PURCHASE,val);
+    setResponse(QUEST_TYPE.REASON_NOT_TO_BUY,"")
+  }
   return (
     <View style={styles.container}>
-        <View style={{flex:1}}>
+        <ScrollView style={styles.scroll}>
             <MCQ 
                 idx = {idx}
                 question = "Will you buy Green bird in your next purchase?"
                 all_answers = {["Yes","No"]}
                 selected_answers= {getResponse(QUEST_TYPE.NEXT_PURCHASE)}
-                handleOptionSelect = {(res) => setResponse(QUEST_TYPE.NEXT_PURCHASE,res)}
+                handleOptionSelect = {handleOptionSelect}
             />
+            {
+                getResponse(QUEST_TYPE.NEXT_PURCHASE)=="No" &&
+                <TextInput
+                    label={'Reason for not buying?'}   
+                    value={getResponse(QUEST_TYPE.REASON_NOT_TO_BUY)}
+                    onChangeText={(a,b) => setResponse(QUEST_TYPE.REASON_NOT_TO_BUY,b)}
+                    style={{height:150,textAlignVertical:'top'}}
+                    multiline={true}
+                    containerStyles={{marginTop:30}}
+                />
+            }
             <View style = {styles.productGroup}>
                 <View style={[styles.dualColumn]}>
                     <Image source={chickenNuggets} style={styles.columnElement}/>
@@ -33,13 +48,13 @@ const NextPurchase = ({idx,changeQuestion}) => {
                     <Image source={chickenTikka} style={styles.columnElement}/>
                 </View>
             </View>
-        </View>
+        </ScrollView>
         <View style={{alignItems:'center', justifySelf:'end'}}>
-            <Button
-                title="NEXT"
-                onPress={changeQuestion}
-                isActive={!!getResponse(QUEST_TYPE.NEXT_PURCHASE)}
-            />
+                <Button
+                    title="NEXT"
+                    onPress={changeQuestion}
+                    isActive={getResponse(QUEST_TYPE.NEXT_PURCHASE)==="Yes" || (getResponse(QUEST_TYPE.REASON_NOT_TO_BUY) && getResponse(QUEST_TYPE.NEXT_PURCHASE)==="No")}
+                />
         </View>
     </View>
   )
@@ -49,9 +64,13 @@ const styles = StyleSheet.create({
     container:{
         flex:1,
         justifyContent:'space-between',
-        paddingTop:GB_UTILS.verticalScale(50),
+        paddingTop:GB_UTILS.verticalScale(90),
         paddingBottom:GB_UTILS.verticalScale(30),
-        paddingHorizontal:15
+    },
+    scroll:{
+        paddingBottom:GB_UTILS.verticalScale(30),
+        marginBottom:GB_UTILS.verticalScale(10),
+        paddingHorizontal:15,
     },
     productGroup:{
         marginTop:GB_UTILS.verticalScale(30)
@@ -61,8 +80,8 @@ const styles = StyleSheet.create({
         justifyContent:'center'
     },
     columnElement:{
-        width:'40%', 
-        height: GB_UTILS.scale(100),
+        width:'50%', 
+        height: GB_UTILS.scale(120),
         resizeMode:'contain', 
     }
 })

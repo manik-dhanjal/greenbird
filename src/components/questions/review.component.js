@@ -8,6 +8,7 @@ import ReactionQuest from '../reactionQuest.components';
 import { QuizContext } from '../../context/quiz.context';
 import QUEST_TYPE from '../../constants/question.constants';
 import GB_Utils from '../../utils'
+import { ScrollView } from 'react-native-gesture-handler';
 
 const WhatTasted = ({idx}) => {
     const {setResponse,getResponse} = useContext(QuizContext);
@@ -19,7 +20,7 @@ const WhatTasted = ({idx}) => {
             <MCQ 
                 idx = {idx}
                 question = {"Which Product you have tasted ?"}
-                all_answers = {["Nuggets", "Seekh Kabab", "Or Both"]}
+                all_answers = {["Chicken-like Nuggets", "Chicken-like Seekh Kebab", "Or Both"]}
                 selected_answers = {getResponse(QUEST_TYPE.WHAT_TASTED)}
                 handleOptionSelect = {handleMCQOptionSelect}
             />
@@ -40,7 +41,7 @@ const ReviewQuestion = ({idx, changeQuestion}) => {
   const handleStageChange = () => {
     switch(stage){
         case 0: {
-            if(getResponse(QUEST_TYPE.WHAT_TASTED)!=='Seekh Kabab') setStage(1);
+            if(getResponse(QUEST_TYPE.WHAT_TASTED)!=='Chicken-like Seekh Kebab') setStage(1);
             else setStage(2);
             break;
         };
@@ -57,33 +58,47 @@ const ReviewQuestion = ({idx, changeQuestion}) => {
 
   const isBtnActive = () => {
     if(stage==0) return !!getResponse(QUEST_TYPE.WHAT_TASTED)
-    else if(stage==1) return !!getResponse(QUEST_TYPE.TASTE_OF_NUGGETS)
-    else if(stage==2) return !!getResponse(QUEST_TYPE.TASTE_OF_KABAB)
+    else if(stage==1){
+        if(getResponse(QUEST_TYPE.TASTE_OF_NUGGETS)==="Not \nSatisfied" || getResponse(QUEST_TYPE.TASTE_OF_NUGGETS)==="Average")
+         return !!getResponse(QUEST_TYPE.SUGGESTION_OF_NUGGETS)
+        else return !!getResponse(QUEST_TYPE.TASTE_OF_NUGGETS)
+    }
+    else if(stage==2){
+       if(getResponse(QUEST_TYPE.TASTE_OF_KABAB)==="Not \nSatisfied" || getResponse(QUEST_TYPE.TASTE_OF_KABAB)==="Average")
+        return !!getResponse(QUEST_TYPE.SUGGESTION_OF_KABAB)
+       else return !!getResponse(QUEST_TYPE.TASTE_OF_KABAB)
+    }
     else return false;
   }
   return (
     <View style={styles.container}>
-        { stage==0 && <WhatTasted idx={idx}/> }
-        {
-            stage==1 && (
-                <ReactionQuest
-                    question="Nuggets Rating:-"
-                    productImage={chickenNuggets}
-                    handleSubmit={(rating) => setResponse(QUEST_TYPE.TASTE_OF_NUGGETS,rating)}
-                    selected = {getResponse(QUEST_TYPE.TASTE_OF_NUGGETS)}
-                />
-            )
-        }
-        {
-            stage==2 && (
-                <ReactionQuest
-                    question="Seekh Kabab Rating:-"
-                    productImage={chickenTikka}
-                    handleSubmit={(rating) => setResponse(QUEST_TYPE.TASTE_OF_KABAB,rating)}
-                    selected = {getResponse(QUEST_TYPE.TASTE_OF_KABAB)}
-                />
-            )
-        }
+        <ScrollView style={styles.scroll}>
+            { stage==0 && <WhatTasted idx={idx}/> }
+            {
+                stage==1 && (
+                    <ReactionQuest
+                        question="Chicken-like Nuggets Rating:-"
+                        productImage={chickenNuggets}
+                        handleSubmit={(rating) => setResponse(QUEST_TYPE.TASTE_OF_NUGGETS,rating)}
+                        selected = {getResponse(QUEST_TYPE.TASTE_OF_NUGGETS)}
+                        suggestionText = {getResponse(QUEST_TYPE.SUGGESTION_OF_NUGGETS)}
+                        setSuggestionText = {(val) => setResponse(QUEST_TYPE.SUGGESTION_OF_NUGGETS,val)}
+                    />
+                )
+            }
+            {
+                stage==2 && (
+                    <ReactionQuest
+                        question="Chicken-like Seekh Kebab Rating:-"
+                        productImage={chickenTikka}
+                        handleSubmit={(rating) => setResponse(QUEST_TYPE.TASTE_OF_KABAB,rating)}
+                        selected = {getResponse(QUEST_TYPE.TASTE_OF_KABAB)}
+                        suggestionText = {getResponse(QUEST_TYPE.SUGGESTION_OF_KABAB)}
+                        setSuggestionText = {(val) => setResponse(QUEST_TYPE.SUGGESTION_OF_KABAB,val)}
+                    />
+                )
+            }
+        </ScrollView>
         <View style={{alignItems:'center', justifySelf:'end'}}>
             <Button
                 title="NEXT"
@@ -99,14 +114,17 @@ const styles = StyleSheet.create({
     container:{
         flex:1,
         justifyContent:'space-between',
-        paddingTop:GB_Utils.verticalScale(50),
+        paddingTop:GB_Utils.verticalScale(90),
         paddingBottom: GB_Utils.verticalScale(30),
         paddingHorizontal:15
+    },
+    scroll:{
+
     },
     dualColumn:{
         flexDirection:'row', 
         justifyContent:'space-evenly',
-        // backgroundColor:'#fff'
+        marginTop:GB_Utils.verticalScale(30)
     },
     columnElement:{
         width:'50%', 

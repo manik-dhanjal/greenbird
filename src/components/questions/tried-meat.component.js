@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Image } from 'react-native'
+import { View, Text, StyleSheet, Image, ScrollView } from 'react-native'
 import React, {useEffect, useState, useContext } from 'react'
 import MCQ from '../mcq.component'
 import Button from '../button.components'
@@ -26,7 +26,7 @@ const TriedMeat = ({idx,changeQuestion}) => {
   }
   return (
     <View style={styles.container}>
-        <View style={{flex:1}}>
+        <ScrollView style={{flex:1}}>
             <MCQ 
                 idx = {idx}
                 question = "Have you tried any other plant based meat brand?"
@@ -41,24 +41,33 @@ const TriedMeat = ({idx,changeQuestion}) => {
                 value = { getResponse(QUEST_TYPE.TRIED_MEAT) }
                 data = {[
                     {
-                        label:"Chicken Sausages",
-                        value:"chicken sausages"
+                        label:"Evo Foods",
+                        value:"Evo Foods"
                     },{
-                        label:"Chicken Nuggets",
-                        value:"chicken nuggest",
+                        label:"Mister Veg",
+                        value:"Mister Veg",
                     },{
-                        label:"Chicken Tikka",
-                        value:"chicken tikka"
+                        label:"Vezlay",
+                        value:"Vezlay"
                     },{
-                        label:"Mutton Keema",
-                        value:"mutton keema"
+                        label:"Wakao",
+                        value:"Wakao"
+                    },{
+                        label:"Imagine Meats",
+                        value:"Imagine Meats"
+                    },{
+                        label:"Veggie Champ",
+                        value:"Veggie Champ"
+                    },{
+                        label:"Blue Tribe",
+                        value:"Blue Tribe"
                     }
                 ]}
                 handleChange = {(val) => setResponse(QUEST_TYPE.TRIED_MEAT,val)}
                 placeholder="Select a Meat Brand"
             />
             }
-            <View style={{flex:1, flexDirection:'column', justifyContent:'center'}}>
+            <View style={{flex:1, flexDirection:'column', justifyContent:'center',marginTop:40}}>
                 <View style={styles.dualColumn}>
                     <Image source={chickenNuggets} style={styles.columnElement}/>
                     <Image source={muttonKeema} style={styles.columnElement}/>
@@ -68,7 +77,7 @@ const TriedMeat = ({idx,changeQuestion}) => {
                     <Image source={chickenTikka} style={styles.columnElement}/>
                 </View>
             </View>
-        </View>
+        </ScrollView>
         <View style={{alignItems:'center', justifySelf:'end'}}>
             <Button
                 title="NEXT"
@@ -84,7 +93,8 @@ const styles = StyleSheet.create({
     container:{
         flex:1,
         // justifyContent:'space-between',
-        paddingVertical:GB_Utils.verticalScale(40),
+        paddingTop:GB_Utils.verticalScale(80),
+        paddingBottom:GB_Utils.verticalScale(30),
         paddingHorizontal:15
     },
     dualColumn:{
@@ -92,8 +102,8 @@ const styles = StyleSheet.create({
         justifyContent:'center'
     },
     columnElement:{
-        width:'38%', 
-        height:GB_Utils.scale(90),
+        width:'50%', 
+        height:GB_Utils.scale(120),
         resizeMode:'contain', 
     }
 })

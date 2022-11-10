@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Image } from 'react-native'
+import { View, Text, StyleSheet, Image,ScrollView } from 'react-native'
 import React, {useEffect, useState, useContext } from 'react'
 import MCQ from '../mcq.component'
 import Button from '../button.components'
@@ -16,16 +16,18 @@ const EnvFriendly = ({idx,changeQuestion}) => {
   }
   return (
     <View style={styles.container}>
-        <View style={{flex:1}}>
-            <MCQ 
-                idx = {idx}
-                question = "Are you conscious about the environment and believe in sustainable living?"
-                all_answers = {["Yes","No"]}
-                selected_answers= {getResponse(QUEST_TYPE.ENV_FRIENDLY)}
-                handleOptionSelect = {(val) => setResponse(QUEST_TYPE.ENV_FRIENDLY,val)}
-            />
-            <Image source={message} style={styles.message}/>
-        </View>
+        <ScrollView>
+            <View style={{flex:1}}>
+                <MCQ 
+                    idx = {idx}
+                    question = "Are you conscious about the environment and believe in sustainable living?"
+                    all_answers = {["Yes","No"]}
+                    selected_answers= {getResponse(QUEST_TYPE.ENV_FRIENDLY)}
+                    handleOptionSelect = {(val) => setResponse(QUEST_TYPE.ENV_FRIENDLY,val)}
+                />
+                <Image source={message} style={styles.message}/>
+            </View>
+        </ScrollView>
         <View style={{alignItems:'center', justifySelf:'end'}}>
             <Button
                 title="NEXT"
@@ -41,7 +43,9 @@ const styles = StyleSheet.create({
     container:{
         flex:1,
         justifyContent:'space-between',
-        paddingVertical:GB_Utils.verticalScale(40)
+        paddingVertical:GB_Utils.verticalScale(40),
+        marginTop:GB_Utils.verticalScale(40),
+        paddingHorizontal:15
     },
     message:{
         width:'100%',

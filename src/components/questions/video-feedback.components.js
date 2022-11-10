@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Image } from 'react-native'
+import { View, Text, StyleSheet, Image, ScrollView } from 'react-native'
 import React, {useEffect, useState, useRef, useContext } from 'react'
 import MCQ from '../mcq.component'
 import Button from '../button.components'
@@ -15,28 +15,91 @@ import GB_Utils from '../../utils';
 
 const ProductVideo = () => {
     const videoPlayer = useRef(null);
+    const [currentProduct,setCurrentProduct] = useState(0)
     const videoError = (error) => {
       console.log(error);
     }
-    const videoBuffer = () => {
-      
-    }
+    const products= [{
+        title:"Mutton-like Keema",
+        subTitle:"Plant Based Meat",
+        features:[{
+            key:"Weight",
+            value:"250gm"
+        },{
+            key:"₹350.00",
+            value:"price"
+        }]
+    },{
+        title:"Chicken-like Seekh Kebab",
+        subTitle:"Plant Based Meat",
+        features:[{
+            key:"Weight",
+            value:"250gm"
+        },{
+            key:"Pack",
+            value:"5 pieces"
+        },{
+            key:"₹350.00",
+            value:"price"
+        }]
+    },{
+        title:"Chicken-like Nuggets",
+        subTitle:"Plant Based Meat",
+        features:[{
+            key:"Weight",
+            value:"260gm"
+        },{
+            key:"Pack",
+            value:"12 pieces"
+        },{
+            key:"₹295.00",
+            value:"price"
+        }]
+    },{
+        title:"Chicken-like Sausages",
+        subTitle:"Plant Based Meat",
+        features:[{
+            key:"Weight",
+            value:"250gm"
+        },{
+            key:"Pack",
+            value:"7 pieces"
+        },{
+            key:"₹395.00",
+            value:"price"
+        }]
+    }]
+
     return (            
-        <View style={{alignItems:'center'}}>
+        <View style={{alignItems:'center', flex:1}}>
+            {/* <Text>Product Video:</Text> */}
             <Video
                 ref={videoPlayer}
                 onError={videoError}
                 source = {require("../../assets/video/product-video.mp4")}
                 volume = {10}
                 style={{
-                    height:GB_Utils.scale(170),
-                    width:'80%',
+                    height:GB_Utils.scale(450),
+                    width:GB_Utils.scale(300),
+
                     // backgroundColor:'#000'
                 }}
                 resizeMode={"contain"}
                 paused = {false}
                 repeat = {true}
             />
+            {/* <View style={styles.ProductDescCont}>
+                <Text>{products[currentProduct].title}</Text>
+                <Text>{products[currentProduct].subTitle}</Text>
+                {
+                    products[currentProduct].features.map((item,idx) =>(
+                        <View key={item.key+products[currentProduct].title}>
+                            <Text>{item.key}</Text>
+                            <Text>{item.value}</Text>
+                        </View>
+                    ))
+                }
+            </View> */}
         </View>
     )
 }
@@ -63,24 +126,27 @@ const VideoFeedback = ({idx,changeQuestion}) => {
   const {getResponse} = useContext(QuizContext);
 
   const handleNextClick = () => {
-    switch (stage) {
-        case 0:{
-            setStage(stage+1);
-            break;
-        }
-        case 1:{
-            console.log(getResponse(QUEST_TYPE.VIDEO_FEEDBACK))
-            if(!getResponse(QUEST_TYPE.VIDEO_FEEDBACK)) return;
-            changeQuestion();
-        }
-    }
+    changeQuestion();
+    // switch (stage) {
+    //     case 0:{
+    //         setStage(stage+1);
+    //         break;
+    //     }
+    //     case 1:{
+    //         console.log(getResponse(QUEST_TYPE.VIDEO_FEEDBACK))
+    //         if(!getResponse(QUEST_TYPE.VIDEO_FEEDBACK)) return;
+    //         changeQuestion();
+    //     }
+    // }
   }
   return (
     <View style={styles.container}>
-        <View>
-            {stage==0 && <ProductVideo/>}
-            { stage==1 && <FeedbackOfVideo/> } 
-            <View style={{marginTop:GB_Utils.verticalScale(30)}}>
+        <ScrollView style={styles.scroll}>
+            <ProductVideo/>
+            <Text></Text>
+            {/* {stage==0 && <ProductVideo/>}
+            { stage==1 && <FeedbackOfVideo/> }  */}
+            {/* <View style={{marginTop:GB_Utils.verticalScale(30)}}>
                 <View style={styles.dualColumn}>
                     <Image source={chickenNuggets} style={styles.columnElement}/>
                     <Image source={muttonKeema} style={styles.columnElement}/>
@@ -89,13 +155,13 @@ const VideoFeedback = ({idx,changeQuestion}) => {
                     <Image source={chickenSausages} style={styles.columnElement}/>
                     <Image source={chickenTikka} style={styles.columnElement}/>
                 </View>
-            </View>
-        </View>
+            </View> */}
+        </ScrollView>
         <View style={{alignItems:'center', justifySelf:'end'}}>
             <Button
                 title="NEXT"
                 onPress={handleNextClick}
-                isActive={!(stage==1 && !getResponse(QUEST_TYPE.VIDEO_FEEDBACK))}
+                // isActive={!(stage==1 && !getResponse(QUEST_TYPE.VIDEO_FEEDBACK))}
             />
         </View>
     </View>
@@ -106,7 +172,7 @@ const styles = StyleSheet.create({
     container:{
         flex:1,
         justifyContent:'space-between',
-        paddingTop:GB_Utils.verticalScale(50),
+        paddingTop:GB_Utils.verticalScale(100),
         paddingBottom: GB_Utils.verticalScale(30),
     },
     dualColumn:{

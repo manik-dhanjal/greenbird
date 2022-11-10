@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{useState} from 'react'
 import {Image, View, Pressable, StyleSheet, Text} from 'react-native'
 import hands from '../assets/images/hands.png';
 import meh from '../assets/images/meh.png';
@@ -6,12 +6,12 @@ import sad from '../assets/images/sad.png';
 import tasty from '../assets/images/tasty.png';
 import smile from '../assets/images/smile.png';
 import GB_Utils from "../utils";
-
+import TextInput from './c_text_input.component';
 const list = [smile, tasty, meh, hands, sad];
-const names = ["Good","Tasty","Average","Excellent","Not \nSatisfied"]
+const names = ["Excellent","Tasty","Good","Average","Not \nSatisfied"]
 
 
-const ReactionQuest = ({question,handleSubmit, productImage, selected}) => {
+const ReactionQuest = ({question,handleSubmit, productImage, selected,suggestionText,setSuggestionText}) => {
     const textColor = (current) => {
         if(names[current]==selected){
             return{
@@ -25,7 +25,7 @@ const ReactionQuest = ({question,handleSubmit, productImage, selected}) => {
     }
     return (
       <View style={styles.container}>
-        <View>
+        <View style={{flex:1}}>
             <View style={styles.question}>
                 <Text style={styles.questionText}>{question}</Text>
             </View>
@@ -39,6 +39,17 @@ const ReactionQuest = ({question,handleSubmit, productImage, selected}) => {
                     ))
                 }
             </View>
+            {
+               ( selected==="Not \nSatisfied" || selected==="Average" ) &&
+               <TextInput
+                    onChangeText={(a,b) => setSuggestionText(b)}
+                    value={suggestionText}
+                    label="Suggestion:"
+                    style={{height:100,textAlignVertical:'top'}}
+                    multiline={true}
+                    containerStyles={{marginTop:30}}
+                />
+            }
         </View>
         <View style={styles.productImageCont}>
             <Image source={productImage} style={styles.productImage}/>
@@ -49,7 +60,7 @@ const ReactionQuest = ({question,handleSubmit, productImage, selected}) => {
 
 const styles = StyleSheet.create({
     container:{
-        justifyContent:'space-around',
+        // justifyContent:'space-around',
         flex:1
     },
     question:{

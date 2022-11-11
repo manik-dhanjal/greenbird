@@ -6233,6 +6233,11 @@
     "jscodeshift" "^0.13.1"
     "nullthrows" "^1.1.1"
 
+"react-native-compressor@^1.6.1":
+  "integrity" "sha512-SmyRPWIQY7RPz50bXkkhLcIjoMMIB62rJJls9cG7XCeMIN/I8TFijmXZjEWrgzRlUMBa0JMr7AIXSLvcMp9hfA=="
+  "resolved" "https://registry.npmjs.org/react-native-compressor/-/react-native-compressor-1.6.1.tgz"
+  "version" "1.6.1"
+
 "react-native-drop-shadow@^0.0.6":
   "integrity" "sha512-eIFZoU7yhr90xB0/Gfuolt/Eelk0F+ohy3piutuYFA+xJx1xtJ/t9xWaaTPwTGXK+56CTnp8mAX4VPDz464NZg=="
   "resolved" "https://registry.npmjs.org/react-native-drop-shadow/-/react-native-drop-shadow-0.0.6.tgz"

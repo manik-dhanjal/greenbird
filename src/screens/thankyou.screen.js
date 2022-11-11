@@ -34,6 +34,10 @@ const ThankyouScreen = ({navigation}) => {
                 <Image source={chickenSausages} style={styles.columnElement}/>
                 <Image source={chickenTikka} style={styles.columnElement}/>
             </View>
+            <View style={styles.couponCont}>
+              <Text style={styles.couponDesc}>Avail your coupon on your next purchase</Text>
+              <Text style={styles.coupon}>LAUNCH10</Text>
+            </View>
             <Button
                 title="THANK YOU"
                 onPress={handleLogout}
@@ -79,5 +83,24 @@ const styles = StyleSheet.create({
       width:'45%', 
       height: GB_Utils.scale(100),
       resizeMode:'contain', 
+  },
+  couponDesc:{
+    fontSize:GB_Utils.scale(16),
+    color:'#fff',
+    textAlign:'center',
+    marginBottom:20,
+  },
+  coupon:{
+    fontSize:GB_Utils.scale(25),
+    color:'#fff',
+    textAlign:'center',
+    backgroundColor:'#18422f',
+    paddingVertical:GB_Utils.scale(5),
+    paddingHorizontal:GB_Utils.scale(20)
+    // width:''
+  },
+  couponCont:{
+    alignItems:'center',
+    marginTop:30
   }
 })

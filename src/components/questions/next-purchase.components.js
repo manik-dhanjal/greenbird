@@ -17,12 +17,17 @@ const NextPurchase = ({idx,changeQuestion}) => {
     setResponse(QUEST_TYPE.NEXT_PURCHASE,val);
     setResponse(QUEST_TYPE.REASON_NOT_TO_BUY,"")
   }
+  const isBtnActive = () => {
+    if(!getResponse(QUEST_TYPE.NEXT_PURCHASE)) return false;
+    if(!getResponse(QUEST_TYPE.REASON_NOT_TO_BUY) && getResponse(QUEST_TYPE.NEXT_PURCHASE)==="No") return false;
+    return true;
+  }
   return (
     <View style={styles.container}>
         <ScrollView style={styles.scroll}>
             <MCQ 
                 idx = {idx}
-                question = "Will you buy Green bird in your next purchase?"
+                question = "Will you buy Greenbird in your next purchase?"
                 all_answers = {["Yes","No"]}
                 selected_answers= {getResponse(QUEST_TYPE.NEXT_PURCHASE)}
                 handleOptionSelect = {handleOptionSelect}
@@ -53,7 +58,7 @@ const NextPurchase = ({idx,changeQuestion}) => {
                 <Button
                     title="NEXT"
                     onPress={changeQuestion}
-                    isActive={getResponse(QUEST_TYPE.NEXT_PURCHASE)==="Yes" || (getResponse(QUEST_TYPE.REASON_NOT_TO_BUY) && getResponse(QUEST_TYPE.NEXT_PURCHASE)==="No")}
+                    isActive={isBtnActive()}
                 />
         </View>
     </View>

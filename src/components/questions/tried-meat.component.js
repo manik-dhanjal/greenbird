@@ -41,8 +41,11 @@ const TriedMeat = ({idx,changeQuestion}) => {
                 value = { getResponse(QUEST_TYPE.TRIED_MEAT) }
                 data = {[
                     {
-                        label:"Evo Foods",
-                        value:"Evo Foods"
+                        label:"Saka-Harry",
+                        value:"Saka-Harry"
+                    },{
+                        label:"GoodDot",
+                        value:"GoodDot"
                     },{
                         label:"Mister Veg",
                         value:"Mister Veg",

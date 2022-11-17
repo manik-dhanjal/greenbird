@@ -35,7 +35,6 @@ const AccessGallary = ({path,handleUploaded, handleRecordAgain}) => {
         Math.round(progress * 1000)
       )
     })
-    // console.log("compressed",result);
     
     setIsUploading(true);
     setTransfered(0);

@@ -19,8 +19,8 @@ const WhatTasted = ({idx}) => {
         <View style={{flex:1}}>
             <MCQ 
                 idx = {idx}
-                question = {"Which Product you have tasted ?"}
-                all_answers = {["Chicken-like Nuggets", "Chicken-like Seekh Kebab", "Or Both"]}
+                question = {"Which product have you tasted ?"}
+                all_answers = {["Chicken-like Nuggets", "Chicken-like Seekh Kebab", "Both"]}
                 selected_answers = {getResponse(QUEST_TYPE.WHAT_TASTED)}
                 handleOptionSelect = {handleMCQOptionSelect}
             />
@@ -46,7 +46,7 @@ const ReviewQuestion = ({idx, changeQuestion}) => {
             break;
         };
         case 1: {
-            if(getResponse(QUEST_TYPE.WHAT_TASTED)==='Or Both') setStage(2);
+            if(getResponse(QUEST_TYPE.WHAT_TASTED)==='Both') setStage(2);
             else changeQuestion();
             break;
         }

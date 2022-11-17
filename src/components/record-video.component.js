@@ -33,7 +33,6 @@ const RecordVideo = ({setPath}) => {
       setIsRecording(true);
       camera.current.startRecording({
         onRecordingFinished: async (video) =>{
-             console.log(video.path)
              setPath(video.path);
              setIsRecording(false)
         },
@@ -90,7 +89,6 @@ const RecordVideo = ({setPath}) => {
       />
     </View>
   )
-  console.log(isActive)
   const device = isFront? devices.front: devices.back
   if(device==null) return <SpinnerWrapper isActive={true} overlayStyle={{backgroundColor:'#000',borderRadius:10}}></SpinnerWrapper>
   return (

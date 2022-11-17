@@ -20,22 +20,11 @@ import LogoHeader from '../components/logo_header.components';
 
 const INITIAL_USER_INPUT = {
     name:"",
-    age:"",
     phone:"",
-    location:""
+    location:"",
+    email:""
 }
-const testingCreds = {
-    name:"manik",
-    age:"18-24",
-    phone:"1111111111",
-    location:"outlet location"
-}
-var age_props = [
-    {label: '18-24', value:'18-24'},
-    {label: '25-32', value: '25-32' },
-    {label:'33-45', value:'33-45'},
-    {label:'45+', value:'45-Above'}
-  ];
+
 const LoginScreen = ({navigation, route}) => {
 
     const [user,setUser] = useState(REQUEST_SUCCESS( INITIAL_USER_INPUT ));
@@ -46,6 +35,11 @@ const LoginScreen = ({navigation, route}) => {
             state.message = message;
             return {...state}
         })
+    }
+    const isMailValid = (mail) => {
+        if(!mail || mail==="") return false;
+        const validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+        return mail.match(validRegex);
     }
     const handleAnonymousLogin = async () => {
         if(user.status===PENDING) return;
@@ -59,16 +53,20 @@ const LoginScreen = ({navigation, route}) => {
             return
         }
         if(!user.data.location ){
-            setMessage("Please enter a valid Location")
+            setMessage("Please select a valid location")
             return
+        }
+        if(!isMailValid(user.data.email)){
+            setMessage("Please enter a valid email address")
+            return;
         }
         setMessage("");
         try{
             setUser(REQUEST_PENDING(user.data))
             await createUserDocument(user.data)
             await setFeedbackResponse(getAllResponses,user.data.phone);
-            navigation.navigate(APP_TYPE.thankYouScreen);
             setUser(REQUEST_SUCCESS(INITIAL_USER_INPUT))
+            navigation.navigate(APP_TYPE.thankYouScreen);
         }catch(e){
             if(e.code === 'auth/too-many-requests'){
                 setUser(state => REQUEST_FAILED(state.data,"Your device is blocked due to too many requests! Please try again later"))
@@ -112,7 +110,7 @@ const LoginScreen = ({navigation, route}) => {
                                             name="name"
                                             onChangeText={handleInputChange}
                                             value={user.data.name}
-                                            placeholder="Name"
+                                            placeholder="Enter Name"
                                             containerStyles={styles.input}
                                         />
                                         <C_TextInput
@@ -120,10 +118,18 @@ const LoginScreen = ({navigation, route}) => {
                                             name="phone"
                                             onChangeText={handleInputChange}
                                             value={user.data.phone}
-                                            placeholder="Mobile No."
+                                            placeholder="Enter Mobile Number"
                                             containerStyles={styles.input}
                                             type="tel"
                                             countryCode='+91'
+                                        />
+                                        <C_TextInput
+                                            label="Email Address:"
+                                            name="email"
+                                            onChangeText={handleInputChange}
+                                            value={user.data.email}
+                                            placeholder="Enter Email Address"
+                                            containerStyles={styles.input}
                                         />
                                         <DropDown
                                             label="Location:"

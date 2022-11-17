@@ -133,7 +133,6 @@ const VideoFeedback = ({idx,changeQuestion}) => {
     //         break;
     //     }
     //     case 1:{
-    //         console.log(getResponse(QUEST_TYPE.VIDEO_FEEDBACK))
     //         if(!getResponse(QUEST_TYPE.VIDEO_FEEDBACK)) return;
     //         changeQuestion();
     //     }

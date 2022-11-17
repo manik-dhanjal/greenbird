@@ -23,7 +23,7 @@ const ThankyouScreen = ({navigation}) => {
     <SafeAreaView style={styles.safeAreaView}>
       <ImageBackground source={tableBg} style={styles.imagebackground}>
         <View style={styles.title}>
-          <Text style={styles.titleText}>Thank you for your participation in campaign</Text>
+          <Text style={styles.titleText}>Thanks for your valuable feedback and for joining the Greenbird initiative</Text>
         </View>
           <View style={styles.bottom}>
             <View style={styles.dualColumn}>
@@ -33,10 +33,6 @@ const ThankyouScreen = ({navigation}) => {
             <View style={styles.dualColumn}>
                 <Image source={chickenSausages} style={styles.columnElement}/>
                 <Image source={chickenTikka} style={styles.columnElement}/>
-            </View>
-            <View style={styles.couponCont}>
-              <Text style={styles.couponDesc}>Avail your coupon on your next purchase</Text>
-              <Text style={styles.coupon}>LAUNCH10</Text>
             </View>
             <Button
                 title="THANK YOU"
@@ -64,7 +60,7 @@ const styles = StyleSheet.create({
     paddingTop:GB_Utils.verticalScale(50)
   },
   titleText:{
-    fontSize:GB_Utils.scale(23),
+    fontSize:GB_Utils.scale(18),
     maxWidth:GB_Utils.scale(340),
     fontWeight:'600',
     color:'#fff',

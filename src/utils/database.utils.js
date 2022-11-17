@@ -13,6 +13,7 @@ export const createUserDocument = async (user={}) => {
       phoneNumber:user.phone,
       createdAt,
       name:user.name,
+      email:user.email,
       location: user.location
     }
     const usersRef = firestore().collection('apps').doc(appIdInFirestore).collection('Users');

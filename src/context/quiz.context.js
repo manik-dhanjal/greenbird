@@ -27,7 +27,6 @@ export const QuizProvider = ({ children }) => {
             }
         })
         // return state;
-        console.log(state)
         return true;
    }
    const flushResponse = () => {

@@ -1,9 +1,8 @@
-import { Text,View, ImageBackground, StyleSheet, Keyboard,KeyboardAvoidingView,TouchableWithoutFeedback,Platform, ScrollView, Image } from 'react-native'
-import React,{useState, useEffect, useContext} from 'react'
+import { Text,View, ImageBackground, StyleSheet, Keyboard,KeyboardAvoidingView,TouchableWithoutFeedback,Platform, ScrollView, Image, ToastAndroid, } from 'react-native'
+import React,{useState, useEffect, useContext, useRef} from 'react'
 import bg from "../assets/images/bg.jpg";
 import Button from '../components/button.components'
 import C_TextInput from '../components/c_text_input.component'
-import C_RadioInput from '../components/c_radio_btn.components'
 import { PENDING, REQUEST_SUCCESS,REQUEST_FAILED, REQUEST_PENDING } from '../constants/request.constants';
 import { COLORS } from '../constants/theme.constants';
 import DropDown from '../components/c_dropdown.components';
@@ -17,6 +16,11 @@ import { QuizContext } from '../context/quiz.context';
 import { APP_TYPE } from '../constants/navigate.constants';
 import GB_Utils from '../utils';
 import LogoHeader from '../components/logo_header.components';
+import storage from '@react-native-firebase/storage';
+import * as Progress from 'react-native-progress';
+import uuid from 'react-native-uuid';
+import { Video as VideoComp } from 'react-native-compressor';
+import QUEST_TYPE from '../constants/question.constants';
 
 const INITIAL_USER_INPUT = {
     name:"",
@@ -26,9 +30,14 @@ const INITIAL_USER_INPUT = {
 }
 
 const LoginScreen = ({navigation, route}) => {
+    
+    const [user,setUser] = useState(REQUEST_SUCCESS({...INITIAL_USER_INPUT}));
 
-    const [user,setUser] = useState(REQUEST_SUCCESS( INITIAL_USER_INPUT ));
-    const {getAllResponses} = useContext(QuizContext)
+    const [isUploading,setIsUploading] = useState(false);
+    const [transfered,setTransfered] = useState(0);
+    const [isCompressing, setIsCompressing] = useState(false);
+    const [compressed, setCompressed] = useState(0);
+    const {getAllResponses,setResponse} = useContext(QuizContext)
 
     const setMessage = (message) => {
         setUser(state => {
@@ -40,6 +49,40 @@ const LoginScreen = ({navigation, route}) => {
         if(!mail || mail==="") return false;
         const validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
         return mail.match(validRegex);
+    }
+    const handleUpload = async (externalPath) => {
+
+        // compressing video
+        setIsCompressing(true);
+        setCompressed(0);
+        const compressedPath = await VideoComp.compress(externalPath,{
+          compressionMethod:'auto',
+        },(progress)=>{
+          setCompressed(
+            Math.round(progress * 1000)
+          )
+        })
+    
+        //uploading video
+        setIsUploading(true);
+        setTransfered(0);
+        const taskRef = storage().ref('/greenbird/'+uuid.v4()+".mp4");
+        try{
+          const task = taskRef.putFile(compressedPath);
+          task.on('state_changed',snapshot => {
+            setTransfered(
+              Math.round(snapshot.bytesTransferred / snapshot.totalBytes * 1000)
+            )
+          })
+          await task;
+          setResponse[QUEST_TYPE.FEEDBACK_VIDEO] = await taskRef.getDownloadURL();
+        //   handleUploaded(await taskRef.getDownloadURL())
+        }catch (e) {
+          console.error(e);
+          ToastAndroid.show(e.message, ToastAndroid.SHORT);
+        }
+        setIsCompressing(false);
+        setIsUploading(false);
     }
     const handleAnonymousLogin = async () => {
         if(user.status===PENDING) return;
@@ -56,16 +99,22 @@ const LoginScreen = ({navigation, route}) => {
             setMessage("Please select a valid location")
             return
         }
-        if(!isMailValid(user.data.email)){
-            setMessage("Please enter a valid email address")
-            return;
-        }
+        // if(!isMailValid(user.data.email)){
+        //     setMessage("Please enter a valid email address")
+        //     return;
+        // }
         setMessage("");
         try{
-            setUser(REQUEST_PENDING(user.data))
-            await createUserDocument(user.data)
-            await setFeedbackResponse(getAllResponses,user.data.phone);
-            setUser(REQUEST_SUCCESS(INITIAL_USER_INPUT))
+
+            const userData = user.data;
+            setUser(REQUEST_PENDING(user));
+        //     inputRef.current.clear();
+            if(!!getAllResponses[QUEST_TYPE.FEEDBACK_VIDEO])
+                await handleUpload(getAllResponses[QUEST_TYPE.FEEDBACK_VIDEO]);
+
+            await createUserDocument(userData);
+            await setFeedbackResponse(getAllResponses,userData.phone);
+            setUser(REQUEST_SUCCESS({...INITIAL_USER_INPUT}));
             navigation.navigate(APP_TYPE.thankYouScreen);
         }catch(e){
             if(e.code === 'auth/too-many-requests'){
@@ -87,7 +136,11 @@ const LoginScreen = ({navigation, route}) => {
 
     useEffect(() =>{
         setMessage(route.params.message);
-    }, [route.params.message])
+    }, [route.params.message]);
+
+    useEffect(() => {
+        setUser(REQUEST_SUCCESS({...INITIAL_USER_INPUT}));
+    },[]);
     
     return (
         <ImageBackground style={styles.background} source={bg}>
@@ -128,7 +181,7 @@ const LoginScreen = ({navigation, route}) => {
                                             name="email"
                                             onChangeText={handleInputChange}
                                             value={user.data.email}
-                                            placeholder="Enter Email Address"
+                                            placeholder="Enter Email Address (Optional)"
                                             containerStyles={styles.input}
                                         />
                                         <DropDown
@@ -183,12 +236,19 @@ const LoginScreen = ({navigation, route}) => {
                                             user.message &&
                                             <Text style={styles.error}>{user.message}</Text>
                                         }
-                                        <Button
-                                            title="SUBMIT"
-                                            containerStyle={styles.submit}
-                                            onPress={handleAnonymousLogin}
-                                            isLoading={user.status===PENDING}
-                                        />
+                                        {isUploading||isCompressing ? (
+                                            <View style={styles.progressBarContainer}>
+                                                <Text style={styles.uploadingText}>{isUploading?'Uploading Video':'Compressing Video'}</Text>
+                                                <Progress.Bar progress={(isUploading?transfered:compressed)/1000} width={GB_Utils.scale(300)} color={COLORS.orange}/>
+                                            </View>
+                                            ) : (
+                                            <Button
+                                                title="SUBMIT"
+                                                containerStyle={styles.submit}
+                                                onPress={() => handleAnonymousLogin()}
+                                                isLoading={user.status===PENDING}
+                                            />
+                                        )}
 
                             </View>
                         </>
@@ -285,5 +345,14 @@ const styles = StyleSheet.create({
     },
     input:{
         marginBottom:20
-    }
+    },
+    progressBarContainer: {
+        alignItems:'center',
+        marginTop: 20
+    },
+    uploadingText:{
+        color:'#fff',
+        fontSize:16,
+        marginBottom:10
+    },
 })

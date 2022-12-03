@@ -1,6 +1,6 @@
 import { Camera,useCameraDevices } from 'react-native-vision-camera';
 import { useState,useEffect,useRef } from 'react';
-import {  StyleSheet, Text, TouchableOpacity, View, ScrollView, Pressable } from 'react-native';
+import {  StyleSheet, Text, TouchableOpacity, View, ScrollView, Pressable, Linking } from 'react-native';
 import Button from './button.components'
 import GB_Utils from '../utils/index'
 import RecordBtn from './recordBtn.component';
@@ -8,13 +8,17 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import SpinnerWrapper from './spinner.component';
 import { useIsForeground } from '../hooks/useIsForeground.hooks';
 import { useIsFocused } from '@react-navigation/core';
+import { VC_PERMISSIONS } from '../constants/permission.constants';
+import { REQUEST_PENDING, REQUEST_SUCCESS, REQUEST_FAILED, PENDING } from '../constants/request.constants';
 
 const RecordVideo = ({setPath}) => {
   const [isFront, setIsFront] = useState(false);
   const [isFlashOn, setIsFlashOn] = useState(false);
   const [isRecording,setIsRecording] = useState(false)
+
   const [isCameraAllowed,setIsCameraAllowed] = useState(false);
   const [isMicrophoneAllowed, setIsMicrophoneAllowed] = useState(false);
+
   const [mounted,setMounted] = useState(false)
   const camera = useRef(null);
   const devices = useCameraDevices();
@@ -22,12 +26,36 @@ const RecordVideo = ({setPath}) => {
   const isFocussed = useIsFocused();
   const isForeground = useIsForeground();
   const isActive = isFocussed && isForeground;
+  
+  const hasCameraPermission = async() => {
+      const cameraPermission = await Camera.getCameraPermissionStatus();
+      if(cameraPermission!=VC_PERMISSIONS.AUTHORIZED){
+        const newCameraPermission = await Camera.requestCameraPermission()
+        // console.log(newCameraPermission)
+        setIsCameraAllowed(newCameraPermission===VC_PERMISSIONS.AUTHORIZED);
+      }else{
+        setIsCameraAllowed(true);
+      }
+  }
+
+  const hasMicrophonePermission = async() => {
+    const microphonePermission = await Camera.getMicrophonePermissionStatus()
+    if(microphonePermission!=VC_PERMISSIONS.AUTHORIZED){
+      const newMicrophonePermission = await Camera.requestMicrophonePermission()
+      setIsMicrophoneAllowed(newMicrophonePermission===VC_PERMISSIONS.AUTHORIZED);
+    }else{
+      setIsMicrophoneAllowed(true);
+    }
+  }
+
   const handleCameraSwitch = () => {
     setIsFront(!isFront);
   }
+
   const handleToggleFlash = () => {
     setIsFlashOn(!isFlashOn);
   }
+
   const handleStartRecording = () => {
     try{
       setIsRecording(true);
@@ -42,53 +70,49 @@ const RecordVideo = ({setPath}) => {
       console.log(e.message);
     }
   }
+
   const handleStopRecording = async () => {
     setMounted(false);
     await camera.current.stopRecording()
   }
   useEffect(() => {
-    (async() => {
-      // check for video permission and ask again if denied
-      const cameraPermission = await Camera.getCameraPermissionStatus()
-      if(cameraPermission!='authorized'){
-        const newCameraPermission = await Camera.requestCameraPermission()
-        setIsCameraAllowed(newCameraPermission=='authorized');
-      }else{
-        setIsCameraAllowed(true);
-      }
-
-      // check for microphone permission and ask again if denied
-      const microphonePermission = await Camera.getMicrophonePermissionStatus()
-      if(microphonePermission!='authorized'){
-        const newMicrophonePermission = await Camera.requestMicrophonePermission()
-        setIsMicrophoneAllowed(newMicrophonePermission=='authorized');
-      }else{
-        setIsMicrophoneAllowed(true);
-      }
-    })()
+    hasCameraPermission();
+    hasMicrophonePermission();
     setMounted(true);
-
-    return () => {
-    };
   },[])
-  if(!isCameraAllowed) return (
+  // console.log(isCameraAllowed)
+
+  if(isCameraAllowed===false) return (
     <View style={styles.permContainer}>
-      <Text style={styles.permText}>Please grant permission for camera</Text>
+      <Text style={styles.permText}>Please go to settings and grant permission for camera</Text>
       <Button
         title="Grant Camera"
-        onPress = {async () => await Camera.requestCameraPermission()}
+        onPress = {async () => Linking.openSettings()}
+        containerStyle={{marginBottom:30}}
       />
-    </View>
-  )
-  if(!isMicrophoneAllowed) return (
-    <View style={styles.permContainer}>
-      <Text style={styles.permText}>Please grant permission for Microphone</Text>
       <Button
-        title="Grant Mic"
-        onPress = {async () => await Camera.requestMicrophonePermission()}
+        title="Check Again"
+        onPress = {async () => hasCameraPermission()}
+        containerStyle={{marginBottom:30}}
       />
     </View>
   )
+
+  if(isMicrophoneAllowed===false) return (
+    <View style={styles.permContainer}>
+      <Text style={styles.permText}>Please go to settings and grant permission for Microphone</Text>
+      <Button
+        title="Grant Microphone"
+        onPress = {async () => Linking.openSettings()}
+        containerStyle={{marginBottom:30}}
+      />
+      <Button
+        title="Check Again"
+        onPress = {async () => hasMicrophonePermission()}
+      />
+    </View>
+  )
+  
   const device = isFront? devices.front: devices.back
   if(device==null) return <SpinnerWrapper isActive={true} overlayStyle={{backgroundColor:'#000',borderRadius:10}}></SpinnerWrapper>
   return (
@@ -166,7 +190,8 @@ const styles = StyleSheet.create({
   permText:{
     color:'#fff',
     fontSize:GB_Utils.scale(20),
-    marginBottom:40
+    marginBottom:40,
+    textAlign:'center'
   },
   btn:{
     width:GB_Utils.scale(50),

@@ -21,7 +21,7 @@ const RecordReview = ({changeQuestion}) => {
     setModalVisible(false);
     changeQuestion();
   }
-  const handleUploaded = (uri) => {
+  const handleSaved = (uri) => {
     console.log(uri)
     setResponse(QUEST_TYPE.FEEDBACK_VIDEO,uri);
     changeQuestion()
@@ -33,7 +33,7 @@ const RecordReview = ({changeQuestion}) => {
         :<AccessGallary 
           path={path} 
           setPath={setPath} 
-          handleUploaded={(downloadableUrl) => handleUploaded(downloadableUrl)}
+          handleSaved={(externalStorageURI) => handleSaved(externalStorageURI)}
           handleRecordAgain = {() => setPath(null)}
         />
       }

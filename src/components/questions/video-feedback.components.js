@@ -81,25 +81,11 @@ const ProductVideo = () => {
                 style={{
                     height:GB_Utils.scale(450),
                     width:GB_Utils.scale(300),
-
-                    // backgroundColor:'#000'
                 }}
                 resizeMode={"contain"}
                 paused = {false}
                 repeat = {true}
             />
-            {/* <View style={styles.ProductDescCont}>
-                <Text>{products[currentProduct].title}</Text>
-                <Text>{products[currentProduct].subTitle}</Text>
-                {
-                    products[currentProduct].features.map((item,idx) =>(
-                        <View key={item.key+products[currentProduct].title}>
-                            <Text>{item.key}</Text>
-                            <Text>{item.value}</Text>
-                        </View>
-                    ))
-                }
-            </View> */}
         </View>
     )
 }

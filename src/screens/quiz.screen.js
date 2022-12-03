@@ -11,7 +11,7 @@ import RecordReview from '../components/questions/record-review.component';
 // TODO: import question components
 
 const QuizScreen = ({navigation}) => {
-    const [questionNum,setQuestionNum] = useState(0)
+    const [questionNum,setQuestionNum] = useState(0);
     const handleQuestionChange = () => {
         if(questionNum+1>5){
             navigation.navigate(APP_TYPE.loginScreen);

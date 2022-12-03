@@ -5,36 +5,38 @@ import { PinchGestureHandler, PinchGestureHandlerGestureEvent, TapGestureHandler
 
 const RecordBtn = ({handleStartRecord,handleStopRecord}) => {
     const [isRecording,setIsRecording] = useState(null);
-    const [timePast, setTimePast] = useState(30);
+    const [timePast, setTimePast] = useState(0);
 
     const handlebtnClick = () => {
         if(isRecording){
             clearInterval(isRecording);
             setIsRecording(null);
-            setTimePast(30);
+            setTimePast(0);
             handleStopRecord();
         }else{
             setIsRecording(
                 setInterval(() => {
-                    setTimePast((cur) => cur-1);
+                    setTimePast((cur) => cur+1);
                 },1000)
             )
             handleStartRecord();
         }
     }
-    useEffect(() => {
-        if(timePast<=0 && isRecording){
-            clearInterval(isRecording);
-            setIsRecording(null);
-            setTimePast(30);
-            handleStopRecord();
-        }
+    // useEffect(() => {
+        // if(isRecording){
+        //     clearInterval(isRecording);
+        //     setIsRecording(null);
+        //     setTimePast(0);
+        //     handleStopRecord();
+        // }
         // return () =>;
-    },[timePast])
-
+    // },[timePast])
+    const addZero = (num)=>{
+        return num/10>=1?num:"0"+num;
+    }
   return (
     <View style={styles.container}>
-        <Text style={styles.timer}>00:{timePast/10>=1?timePast:"0"+timePast }</Text>
+        <Text style={styles.timer}>{addZero(parseInt(timePast/60))}:{addZero(timePast%60)}</Text>
         <Pressable style={styles.btnContainer} onPress={handlebtnClick}>
             <View style={!isRecording?styles.startRecordBtn:styles.stopRecordBtn}></View>
         </Pressable>
